@@ -35,7 +35,8 @@ def main():
         print 'Container %s does not exist, creating...' % args.container
         headers, status = rax.put('%s/%s' % (endpoint, args.container))
 
-    headers, status = rax.put('%s/%s' % (cdn_endpoint, args.container), extra_headers={'X-CDN-Enabled': 'true'})
+    headers, status = rax.put('%s/%s' % (cdn_endpoint, args.container),
+                              extra_headers={'X-CDN-Enabled': 'true'})
 
     print '%s CDN created and enabled:' % args.container
     print 'CDN URI: %s' % headers.get('X-Cdn-Uri')

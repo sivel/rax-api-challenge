@@ -44,16 +44,19 @@ def main():
     domainid = domains['domains'][0]['id']
     headers, records = rax.get('%s/domains/%s/records' % (endpoint, domainid))
     namematches = filter(lambda x: x['name'] == args.fqdn, records['records'])
-    exactmatches = filter(lambda x: x['name'] == args.fqdn and x['data'] == args.ip, records['records'])
+    exactmatches = filter(lambda x: x['name'] == args.fqdn and
+                          x['data'] == args.ip, records['records'])
 
     if exactmatches:
         print 'Exact record match:'
-        print '\n'.join(['%(name)s: %(data)s' % record for record in exactmatches])
+        print '\n'.join(['%(name)s: %(data)s' %
+                         record for record in exactmatches])
         print 'Not adding record'
         sys.exit(1)
     elif namematches:
         print 'Record already exists:'
-        print '\n'.join(['%(name)s: %(data)s' % record for record in namematches])
+        print '\n'.join(['%(name)s: %(data)s' %
+                         record for record in namematches])
         print 'Adding additional record with same name'
 
     data = {
@@ -61,12 +64,13 @@ def main():
             {
                 'ttl': 300,
                 'name': args.fqdn,
-                'type': 'A',
+                'type': 'CNAME',
                 'data': args.ip
             }
         ]
     }
-    headers, record = rax.post('%s/domains/%s/records' % (endpoint, domainid), data=data)
+    headers, record = rax.post('%s/domains/%s/records' % (endpoint, domainid),
+                               data=data)
     print 'Record added'
 
 

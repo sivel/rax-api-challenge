@@ -21,7 +21,8 @@ def main():
                         'build the database in', choices=['DFW', 'ORD', 'LON'])
     parser.add_argument('--user', required=False, help='The user to create for'
                         'database access. Defaults to current user')
-    parser.add_argument('--password', required=False, help='Password for DB user')
+    parser.add_argument('--password', required=False,
+                        help='Password for DB user')
 
     args = parser.parse_args()
 
@@ -77,7 +78,8 @@ def main():
     t = prettytable.PrettyTable(['ID', 'Name', 'Hostname', 'Database', 'User',
                                  'Password'])
     t.add_row([instance['instance']['id'], instance['instance']['name'],
-               instance['instance']['hostname'], args.database, user, password])
+               instance['instance']['hostname'], args.database, user,
+               password])
 
     print
     print t
