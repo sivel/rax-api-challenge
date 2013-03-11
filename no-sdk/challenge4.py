@@ -64,7 +64,7 @@ def main():
             {
                 'ttl': 300,
                 'name': args.fqdn,
-                'type': 'CNAME',
+                'type': 'A',
                 'data': args.ip
             }
         ]
