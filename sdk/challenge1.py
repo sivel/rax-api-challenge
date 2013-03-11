@@ -42,10 +42,13 @@ def main():
         print 'Sleeping 30 seconds before checking for server readiness...'
         time.sleep(30)
         for host, server in server_details.iteritems():
+            if server['ip']:
+                continue
             details = cs.servers.get(server['id'])
-            if details.status == 'ACTIVE':
-                server_details[host]['ip'] = details.accessIPv4
+            if details.networks:
+                server_details[host]['ip'] = details.networks['public']
                 complete += 1
+
     t = prettytable.PrettyTable(['ID', 'Host', 'IP', 'Admin Password'])
     for host, server in server_details.iteritems():
         t.add_row([server['id'], host, server['ip'], server['adminPass']])
