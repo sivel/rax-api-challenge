@@ -47,18 +47,16 @@ def main():
     print 'Building %s from image...' % newhost
     server = cs.servers.create(newhost, base_image, base_details.flavor['id'])
 
-    adminPass = server.adminPass
-    while 1:
+    while server.status != 'ACTIVE':
         print 'Sleeping 30 seconds before checking for server readiness...'
         time.sleep(30)
-        details = cs.servers.get(server.id)
-        if details.status == 'ACTIVE':
-            break
+        server.get()
     print '%s online and ready...' % newhost
     print 'Cleaning up image...'
     cs.images.delete(base_image)
     t = prettytable.PrettyTable(['ID', 'Host', 'IP', 'Admin Password'])
-    t.add_row([details.id, newhost, details.accessIPv4, adminPass])
+    t.add_row([server.id, newhost, ', '.join(server.networks['public']),
+               server.adminPass])
     print
     print t
 

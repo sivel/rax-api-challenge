@@ -25,32 +25,24 @@ def main():
     dc = args.dc if args.dc else pyrax.default_region
     cs = pyrax.connect_to_cloudservers(dc)
     print 'Building servers in: %s' % dc
-    server_details = {}
+    servers = {}
     for i in xrange(0, 3):
         host = '%s%d' % (args.base, i)
         print 'Creating server: %s' % host
-        server = cs.servers.create(host, args.image, 2)
-        server_details[host] = {
-            'id': server.id,
-            'adminPass': server.adminPass,
-            'ip': ''
-        }
-        print '%s: %s' % (host, server.id)
-    complete = 0
-    while complete < 3:
+        servers[host] = cs.servers.create(host, args.image, 2)
+        print '%s: %s' % (host, servers[host].id)
+    while filter(lambda server: server.status != 'ACTIVE', servers.values()):
         print 'Sleeping 30 seconds before checking for server readiness...'
         time.sleep(30)
-        for host, server in server_details.iteritems():
-            if server['ip']:
+        for host in servers:
+            if servers[host].status == 'ACTIVE':
                 continue
-            details = cs.servers.get(server['id'])
-            if details.networks:
-                server_details[host]['ip'] = details.networks['public']
-                complete += 1
+            servers[host].get()
 
     t = prettytable.PrettyTable(['ID', 'Host', 'IP', 'Admin Password'])
-    for host, server in server_details.iteritems():
-        t.add_row([server['id'], host, server['ip'], server['adminPass']])
+    for host, server in servers.iteritems():
+        t.add_row([server.id, host, ', '.join(server.networks['public']),
+                   server.adminPass])
     print 'Servers online and ready...'
     print t
 

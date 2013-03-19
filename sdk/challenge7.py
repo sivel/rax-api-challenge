@@ -27,35 +27,23 @@ def main():
 
     print 'Building servers in: %s' % dc
 
-    server_details = {}
+    servers = {}
     for i in xrange(0, 2):
         host = '%s%d' % (args.base, i)
         print 'Creating server: %s' % host
-        server = cs.servers.create(host, args.image, 2)
-        server_details[host] = {
-            'id': server.id,
-            'adminPass': server.adminPass,
-            'ip': '',
-            'private': ''
-        }
-        print '%s: %s' % (host, server.id)
-    complete = 0
-    while complete < 2:
+        servers[host] = cs.servers.create(host, args.image, 2)
+        print '%s: %s' % (host, servers[host].id)
+    while filter(lambda server: server.status != 'ACTIVE', servers.values()):
         print 'Sleeping 30 seconds before checking for server readiness...'
         time.sleep(30)
-        for host, server in server_details.iteritems():
-            if server['ip']:
+        for host in servers:
+            if servers[host].status == 'ACTIVE':
                 continue
-            details = cs.servers.get(server['id'])
-            if details.networks:
-                server_details[host]['ip'] = details.networks['public']
-                server_details[host]['private'] = (details.networks['private']
-                                                   [0])
-                complete += 1
+            servers[host].get()
 
     nodes = []
     for host, server in server_details.iteritems():
-        nodes.append(clb.Node(address=server['private'], port=80,
+        nodes.append(clb.Node(address=server.networks['private'][0], port=80,
                               condition='ENABLED'))
 
     vip = clb.VirtualIP(type='PUBLIC')
@@ -66,9 +54,9 @@ def main():
     public_addresses = [vip.address for vip in lb.virtual_ips]
 
     t = prettytable.PrettyTable(['ID', 'Host', 'IP', 'Admin Password'])
-    for host, server in server_details.iteritems():
-        t.add_row([server['id'], host, ', '.join(server['ip']),
-                   server['adminPass']])
+    for host, server in servers.iteritems():
+        t.add_row([server.id, host, ', '.join(server.networks['public']),
+                   server.adminPass])
     print 'Servers and loadbalancer online and ready...'
     print t
     t = prettytable.PrettyTable(['ID', 'Name', 'IP Address'])
