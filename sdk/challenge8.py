@@ -25,10 +25,10 @@ def main():
 
     container = '-'.join(parts[:-2])
 
-    credentials_file = os.path.expanduser('~/.rackspace_cloud_credentials')
-    pyrax.set_credential_file(credentials_file)
     dc = args.dc if args.dc else pyrax.default_region
-    cf = pyrax.connect_to_cloudfiles(dc)
+    credentials_file = os.path.expanduser('~/.rackspace_cloud_credentials')
+    pyrax.set_credential_file(credentials_file, region=dc)
+    cf = pyrax.cloudfiles
     dns = pyrax.cloud_dns
 
     print 'Working in %s' % dc

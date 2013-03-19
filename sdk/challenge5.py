@@ -38,10 +38,10 @@ def main():
     else:
         user = args.user
 
-    credentials_file = os.path.expanduser('~/.rackspace_cloud_credentials')
-    pyrax.set_credential_file(credentials_file)
     dc = args.dc if args.dc else pyrax.default_region
-    cdb = pyrax.connect_to_cloud_databases(dc)
+    credentials_file = os.path.expanduser('~/.rackspace_cloud_credentials')
+    pyrax.set_credential_file(credentials_file, region=dc)
+    cdb = pyrax.cloud_databases
 
     print 'Creating DB instance in %s' % dc
 

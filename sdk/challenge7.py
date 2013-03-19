@@ -19,11 +19,11 @@ def main():
                         default='5cebb13a-f783-4f8c-8058-c4182c724ccd')
 
     args = parser.parse_args()
-    credentials_file = os.path.expanduser('~/.rackspace_cloud_credentials')
-    pyrax.set_credential_file(credentials_file)
     dc = args.dc if args.dc else pyrax.default_region
-    cs = pyrax.connect_to_cloudservers(dc)
-    clb = pyrax.connect_to_cloud_loadbalancers(dc)
+    credentials_file = os.path.expanduser('~/.rackspace_cloud_credentials')
+    pyrax.set_credential_file(credentials_file, region=dc)
+    cs = pyrax.cloudservers
+    clb = pyrax.cloud_loadbalancers
 
     print 'Building servers in: %s' % dc
 

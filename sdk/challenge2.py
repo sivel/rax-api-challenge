@@ -19,10 +19,10 @@ def main():
                         ' the original servers name')
     args = parser.parse_args()
 
-    credentials_file = os.path.expanduser('~/.rackspace_cloud_credentials')
-    pyrax.set_credential_file(credentials_file)
     dc = args.dc if args.dc else 'DFW'
-    cs = pyrax.connect_to_cloudservers(dc)
+    credentials_file = os.path.expanduser('~/.rackspace_cloud_credentials')
+    pyrax.set_credential_file(credentials_file, region=dc)
+    cs = pyrax.cloudservers
 
     try:
         base_details = cs.servers.get(args.base)

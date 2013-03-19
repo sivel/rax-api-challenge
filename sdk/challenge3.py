@@ -27,10 +27,10 @@ def main():
         print ('The name of the destination container was sanitized: %s' %
                destination)
 
-    credentials_file = os.path.expanduser('~/.rackspace_cloud_credentials')
-    pyrax.set_credential_file(credentials_file)
     dc = args.dc if args.dc else pyrax.default_region
-    cf = pyrax.connect_to_cloudfiles(dc)
+    credentials_file = os.path.expanduser('~/.rackspace_cloud_credentials')
+    pyrax.set_credential_file(credentials_file, region=dc)
+    cf = pyrax.cloudfiles
 
     print 'Uploading to %s in %s' % (destination, dc)
 
