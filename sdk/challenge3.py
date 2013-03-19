@@ -29,9 +29,8 @@ def main():
 
     credentials_file = os.path.expanduser('~/.rackspace_cloud_credentials')
     pyrax.set_credential_file(credentials_file)
-    cf = pyrax.cloudfiles
-
     dc = args.dc if args.dc else pyrax.default_region
+    cf = pyrax.connect_to_cloudfiles(dc)
 
     print 'Uploading to %s in %s' % (destination, dc)
 

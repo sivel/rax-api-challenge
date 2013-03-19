@@ -22,9 +22,8 @@ def main():
 
     credentials_file = os.path.expanduser('~/.rackspace_cloud_credentials')
     pyrax.set_credential_file(credentials_file)
-    cs = pyrax.cloudservers
     dc = args.dc if args.dc else pyrax.default_region
-    pyrax.connect_to_cloudservers(dc)
+    cs = pyrax.connect_to_cloudservers(dc)
     print 'Building servers in: %s' % dc
     server_details = {}
     for i in xrange(0, 3):
