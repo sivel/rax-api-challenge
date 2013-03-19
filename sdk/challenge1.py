@@ -31,18 +31,21 @@ def main():
         print 'Creating server: %s' % host
         servers[host] = cs.servers.create(host, args.image, 2)
         print '%s: %s' % (host, servers[host].id)
-    while filter(lambda server: server.status != 'ACTIVE', servers.values()):
+    statuses = ['ACTIVE', 'ERROR', 'UNKNOWN']
+    while filter(lambda server: server.status not in statuses,
+                 servers.values()):
         print 'Sleeping 30 seconds before checking for server readiness...'
         time.sleep(30)
         for host in servers:
-            if servers[host].status == 'ACTIVE':
+            if servers[host].status in statuses:
                 continue
             servers[host].get()
 
-    t = prettytable.PrettyTable(['ID', 'Host', 'IP', 'Admin Password'])
+    t = prettytable.PrettyTable(['ID', 'Host', 'Status', 'IP',
+                                 'Admin Password'])
     for host, server in servers.iteritems():
-        t.add_row([server.id, host, ', '.join(server.networks['public']),
-                   server.adminPass])
+        t.add_row([server.id, host, server.status,
+                   ', '.join(server.networks['public']), server.adminPass])
     print 'Servers online and ready...'
     print t
 
