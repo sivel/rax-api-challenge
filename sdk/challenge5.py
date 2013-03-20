@@ -18,7 +18,8 @@ def main():
     parser.add_argument('instance', help='Name of database instance')
     parser.add_argument('database', help='name of database')
     parser.add_argument('--dc', required=False, help='The region to '
-                        'build the database in', choices=['DFW', 'ORD', 'LON'])
+                        'build the database in', choices=['DFW', 'ORD', 'LON'],
+                        default=pyrax.default_region)
     parser.add_argument('--user', required=False, help='The user to create for'
                         'database access. Defaults to current user')
     parser.add_argument('--password', required=False,
@@ -38,12 +39,11 @@ def main():
     else:
         user = args.user
 
-    dc = args.dc if args.dc else pyrax.default_region
     credentials_file = os.path.expanduser('~/.rackspace_cloud_credentials')
-    pyrax.set_credential_file(credentials_file, region=dc)
+    pyrax.set_credential_file(credentials_file, region=args.dc)
     cdb = pyrax.cloud_databases
 
-    print 'Creating DB instance in %s' % dc
+    print 'Creating DB instance in %s' % args.dc
 
     users = [
         {

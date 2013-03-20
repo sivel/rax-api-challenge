@@ -13,16 +13,16 @@ def main():
     parser.add_argument('container', help='The destination CloudFiles '
                         'container to enable CDN support on')
     parser.add_argument('--dc', required=False, help='The region to '
-                        'build the servers in', choices=['DFW', 'ORD', 'LON'])
+                        'build the servers in', choices=['DFW', 'ORD', 'LON'],
+                        default=pyrax.default_region)
 
     args = parser.parse_args()
 
-    dc = args.dc if args.dc else pyrax.default_region
     credentials_file = os.path.expanduser('~/.rackspace_cloud_credentials')
-    pyrax.set_credential_file(credentials_file, region=dc)
+    pyrax.set_credential_file(credentials_file, region=args.dc)
     cf = pyrax.cloudfiles
 
-    print 'Working in %s' % dc
+    print 'Working in %s' % args.dc
 
     try:
         container = cf.get_container(args.container)

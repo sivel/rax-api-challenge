@@ -17,7 +17,8 @@ def main():
                         'container to upload files to. Will be created if it '
                         'does not exist')
     parser.add_argument('--dc', required=False, help='The region to '
-                        'build the servers in', choices=['DFW', 'ORD', 'LON'])
+                        'build the servers in', choices=['DFW', 'ORD', 'LON'],
+                        default=pyrax.default_region)
 
     args = parser.parse_args()
 
@@ -27,12 +28,11 @@ def main():
         print ('The name of the destination container was sanitized: %s' %
                destination)
 
-    dc = args.dc if args.dc else pyrax.default_region
     credentials_file = os.path.expanduser('~/.rackspace_cloud_credentials')
-    pyrax.set_credential_file(credentials_file, region=dc)
+    pyrax.set_credential_file(credentials_file, region=args.dc)
     cf = pyrax.cloudfiles
 
-    print 'Uploading to %s in %s' % (destination, dc)
+    print 'Uploading to %s in %s' % (destination, args.dc)
 
     try:
         files = cf.get_container(destination)

@@ -13,15 +13,15 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('base', help='The base server id to clone from')
     parser.add_argument('--dc', required=True, help='The region to '
-                        'build the server in', choices=['DFW', 'ORD', 'LON'])
+                        'build the server in', choices=['DFW', 'ORD', 'LON'],
+                        default=pyrax.default_region)
     parser.add_argument('--name', required=False, help='The name of the new'
                         ' server. Defaults to adding "-clone" to the end of'
                         ' the original servers name')
     args = parser.parse_args()
 
-    dc = args.dc if args.dc else 'DFW'
     credentials_file = os.path.expanduser('~/.rackspace_cloud_credentials')
-    pyrax.set_credential_file(credentials_file, region=dc)
+    pyrax.set_credential_file(credentials_file, region=args.dc)
     cs = pyrax.cloudservers
 
     try:

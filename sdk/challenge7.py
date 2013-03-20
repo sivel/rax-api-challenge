@@ -13,19 +13,19 @@ def main():
     parser.add_argument('base', help='The base hostname to use, 3x512MB'
                         ' servers will be built using this base hostname')
     parser.add_argument('--dc', required=False, help='The region to '
-                        'build the servers in', choices=['DFW', 'ORD', 'LON'])
+                        'build the servers in', choices=['DFW', 'ORD', 'LON'],
+                        default=pyrax.default_region)
     parser.add_argument('--image', required=False, help='The image ID to build'
                         ' the servers with',
                         default='5cebb13a-f783-4f8c-8058-c4182c724ccd')
 
     args = parser.parse_args()
-    dc = args.dc if args.dc else pyrax.default_region
     credentials_file = os.path.expanduser('~/.rackspace_cloud_credentials')
-    pyrax.set_credential_file(credentials_file, region=dc)
+    pyrax.set_credential_file(credentials_file, region=args.dc)
     cs = pyrax.cloudservers
     clb = pyrax.cloud_loadbalancers
 
-    print 'Building servers in: %s' % dc
+    print 'Building servers in: %s' % args.dc
 
     servers = {}
     for i in xrange(0, 2):
