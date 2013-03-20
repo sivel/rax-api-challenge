@@ -44,11 +44,11 @@ Write a script that builds three 512 MB Cloud Servers that follow a similar nami
 
 ### Challenge 2
 
-Write a script that clones a server (takes an image and deploys the image as a new server). ***Worth 1 Point***
+Write a script that clones a server (takes an image and deploys the image as a new server). ***Worth 2 Point***
 
 ### Challenge 3
 
-Write a script that accepts a directory as an argument as well as a container name. The script should upload the contents of the specified directory to the container (or create it if it doesn't exist). The script should handle errors appropriately. (Check for invalid paths, etc.) ***Worth 3 Points***
+Write a script that accepts a directory as an argument as well as a container name. The script should upload the contents of the specified directory to the container (or create it if it doesn't exist). The script should handle errors appropriately. (Check for invalid paths, etc.) ***Worth 2 Points***
 
 ### Challenge 4
 
