@@ -25,7 +25,7 @@ import os
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('base', help='The base hostname to use, 3x512MB')
+    parser.add_argument('base', help='The base hostname to use')
     parser.add_argument('--dc', required=False, help='The region to '
                         'build the servers in', choices=['DFW', 'ORD', 'LON'],
                         default=pyrax.default_region)
