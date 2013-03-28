@@ -51,7 +51,7 @@ def main():
     progress = []
     print 'Sleeping 30 seconds before checking server build progress...'
     time.sleep(30)
-    print '\n\n'
+    print '\n' * (abs(args.count) - 1)
     while filter(lambda server: server.status not in statuses,
                  servers.values()):
         progress[:] = []
@@ -62,7 +62,7 @@ def main():
             servers[host].get()
             progress.append('%s: %s%%' % (host, servers[host].progress))
         progress.sort()
-        sys.stdout.write('\r%s%s' % ('\x1b[K\x1b[A' * (len(progress) - 1), '\n'.join(progress)))
+        sys.stdout.write('\r%s%s' % ('\x1b[A' * (len(progress) - 1), '\n'.join(progress)))
         sys.stdout.flush()
         time.sleep(30)
 
