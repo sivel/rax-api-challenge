@@ -62,7 +62,8 @@ def main():
             servers[host].get()
             progress.append('%s: %s%%' % (host, servers[host].progress))
         progress.sort()
-        sys.stdout.write('\r%s%s' % ('\x1b[A' * (len(progress) - 1), '\n'.join(progress)))
+        sys.stdout.write('\r%s%s' % ('\x1b[A' * (len(progress) - 1),
+                                     '\n'.join(progress)))
         sys.stdout.flush()
         time.sleep(30)
 
