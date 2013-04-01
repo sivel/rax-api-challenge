@@ -33,6 +33,8 @@ def main():
     parser.add_argument('--image', required=False, help='The image ID to build'
                         ' the servers with',
                         default='5cebb13a-f783-4f8c-8058-c4182c724ccd')
+    parser.add_argument('--count', required=False, help='Number of servers to '
+                        'build. Default 2', default=2, type=int)
 
     args = parser.parse_args()
     credentials_file = os.path.expanduser('~/.rackspace_cloud_credentials')
@@ -43,7 +45,7 @@ def main():
     print 'Building servers in: %s' % args.dc
 
     servers = {}
-    for i in xrange(0, 2):
+    for i in xrange(0, args.count):
         host = '%s%d' % (args.base, i)
         print 'Creating server: %s' % host
         servers[host] = cs.servers.create(host, args.image, 2)
