@@ -71,7 +71,7 @@ def main():
             'password': password
         }
     ]
-    instance = cdb.create(args.instance, flavor='m1.tiny', volume=1,
+    instance = cdb.create(args.instance, flavor='1GB Instance', volume=1,
                           users=users, databases=[{'name': args.database}])
 
     t = prettytable.PrettyTable(['ID', 'Name', 'Hostname', 'Database', 'User',
