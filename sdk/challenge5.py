@@ -16,15 +16,9 @@
 #    under the License.
 
 import pyrax
-import sys
 import os
-import requests
 import argparse
-import time
-import re
-import mimetypes
 import random
-import string
 import prettytable
 
 

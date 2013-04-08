@@ -18,9 +18,8 @@
 import pyrax
 import sys
 import os
-import requests
 import argparse
-import re
+import socket
 
 
 def main():
@@ -36,10 +35,10 @@ def main():
         sys.exit(1)
     domain = '.'.join(parts[-2:])
 
-    if not re.match('^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}'
-                    '(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$', str(args.ip)):
-        print 'Not a proper IP: %s' % args.ip
-        sys.exit(1)
+    try:
+        socket.inet_aton(args.ip)
+    except:
+        raise SystemExit('Not a proper IPv4 address: %s' % args.ip)
 
     credentials_file = os.path.expanduser('~/.rackspace_cloud_credentials')
     pyrax.set_credential_file(credentials_file)

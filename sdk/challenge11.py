@@ -24,7 +24,6 @@ import prettytable
 import random
 import socket
 import struct
-import re
 from OpenSSL import crypto, SSL
 
 
@@ -91,10 +90,10 @@ def main():
     args = parser.parse_args()
 
     netid = args.network.split('/', 1)
-    if not re.match('^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}'
-                    '(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$',
-                    str(netid[0])):
-        raise SystemExit('Not a proper IP: %s' % netid[0])
+    try:
+        socket.inet_aton(netid[0])
+    except:
+        raise SystemExit('Not a proper IPv4 address: %s' % netid[0])
     quad1, quad2, quad3, quad4 = netid[0].split('.')
     if ((int(quad1) not in (10, 172, 192)) or
             (int(quad1) == 172 and int(quad2) not in xrange(16, 32)) or

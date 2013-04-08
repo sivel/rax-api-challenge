@@ -18,9 +18,7 @@
 import pyrax
 import sys
 import os
-import requests
 import argparse
-import time
 
 
 def main():
