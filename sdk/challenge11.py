@@ -52,9 +52,8 @@ def main():
                         default='192.168.133.0/24')
 
     parser.add_argument('-b', '--bits', help='Number of bits to use in '
-                                             'generating the private key, in'
-                                             ' multiples of 1024', type=int,
-                        default=1024)
+                        'generating the private key, in multiples of 1024',
+                        type=int, default=1024)
 
     encryption = parser.add_mutually_exclusive_group()
     encryption.add_argument('-t', '--type', help='Encryption type to use in'
