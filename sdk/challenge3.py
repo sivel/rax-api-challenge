@@ -21,7 +21,6 @@ import os
 import requests
 import argparse
 import time
-import re
 
 
 def main():
@@ -38,7 +37,7 @@ def main():
     args = parser.parse_args()
 
     source = os.path.abspath(os.path.normpath(args.source))
-    destination = re.sub(r'\W+', '-', args.destination)
+    destination = pyrax.utils.slugify(args.destination)
     if args.destination != destination:
         print ('The name of the destination container was sanitized: %s' %
                destination)
