@@ -57,7 +57,7 @@ def main():
         cf.upload_file(destination, source)
     elif os.path.isdir(source):
         print 'Uploading contents of %s...' % source
-        upload_key = cf.upload_folder(source, container=destination)
+        upload_key, total_bytes = cf.upload_folder(source, container=destination)
         try:
             while pyrax.cloudfiles.get_uploaded(upload_key):
                 pass
